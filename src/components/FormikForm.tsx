@@ -1,15 +1,22 @@
 import React from "react";
 import * as yup from "yup";
-import {
-  Formik,
-  Form,
-  Field,
-  ErrorMessage,
-  FormikProps,
-  FormikHelpers,
-} from "formik";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
+
+// validation schema using yup
+export const validationSchema = yup.object().shape({
+  name: yup.string().required("Required").min(4),
+  username: yup.string().required("Required").min(4),
+  email: yup.string().required("Required").email("Invalid email"),
+
+  password: yup.string().required("Required").min(8),
+  confirmPassword: yup
+    .string()
+    .required("Required")
+    .oneOf([yup.ref("password")], `Password don't match`),
+});
 
 const FormikForm = () => {
+  // initial form values
   const initialValues = {
     name: "",
     username: "",
@@ -17,17 +24,6 @@ const FormikForm = () => {
     password: "",
     confirmPassword: "",
   };
-  const validationSchema = yup.object().shape({
-    name: yup.string().required("Required").min(4),
-    username: yup.string().required("Required").min(4),
-    email: yup.string().required("Required").email("Invalid email"),
-
-    password: yup.string().required("Required").min(8),
-    confirmPassword: yup
-      .string()
-      .required("Required")
-      .oneOf([yup.ref("password")], `Password don't match`),
-  });
 
   //   field type
   type inputField = {
@@ -36,6 +32,7 @@ const FormikForm = () => {
     name: "name" | "username" | "email" | "password" | "confirmPassword";
     type: React.HTMLInputTypeAttribute;
   };
+
   // input field list
   const inputFields: inputField[] = [
     {
@@ -69,7 +66,8 @@ const FormikForm = () => {
       type: "password",
     },
   ];
-  // handle submit
+
+  // handle submit function
   const handleSubmit = (
     values: typeof initialValues,
     action: FormikHelpers<typeof initialValues>
@@ -77,9 +75,10 @@ const FormikForm = () => {
     alert(JSON.stringify(values, undefined, 2));
     action.resetForm();
   };
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center flex-col">
-      <h1 className="text-2xl font-semibold">Form Validation</h1>
+      <h1 className="text-2xl font-semibold">Form Validation Formik</h1>
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
