@@ -77,8 +77,8 @@ const FormikForm = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center flex-col">
-      <h1 className="text-2xl font-semibold">Form Validation Formik</h1>
+    <div className="min-h-screen w-full flex items-center justify-center flex-col space-y-4">
+      <h1 className="text-xl font-semibold">Form Validation Formik</h1>
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
